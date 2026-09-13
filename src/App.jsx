@@ -692,16 +692,19 @@ export default function App() {
         /* ---------- nav ---------- */
         .nav {
           position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-          padding: 22px 0; transition: padding 0.3s ease, background 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-          background: linear-gradient(180deg, rgba(15,14,13,0.6) 0%, rgba(15,14,13,0.15) 70%, rgba(15,14,13,0) 100%);
-          border-bottom: 1px solid transparent;
+          padding: 22px 0; transition: padding 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
         }
+        .nav::before {
+          content: ''; position: absolute; left: 0; right: 0; top: 0; height: 220%; z-index: -1;
+          background: linear-gradient(180deg, rgba(15,14,13,0.65) 0%, rgba(15,14,13,0.32) 45%, rgba(15,14,13,0.1) 75%, rgba(15,14,13,0) 100%);
+          pointer-events: none; opacity: 1; transition: opacity 0.3s ease;
+        }
+        .nav.is-scrolled::before { opacity: 0; }
         .nav.is-scrolled {
           padding: 13px 0;
           background: color-mix(in srgb, var(--ink) 90%, transparent);
           backdrop-filter: blur(14px);
           box-shadow: 0 10px 30px -14px rgba(0,0,0,0.45);
-          border-bottom-color: rgba(255,255,255,0.08);
         }
         .nav-inner { display: flex; align-items: center; justify-content: space-between; }
         .nav .nav-inner .logo { display: flex; align-items: center; gap: 11px; font-family: var(--font-display); font-size: 1.4rem; letter-spacing: 0.8px; color: white; }
@@ -745,8 +748,8 @@ export default function App() {
           padding: 32px; transform: translateY(-100%); transition: transform 0.35s ease;
         }
         .mobile-menu.is-open { transform: translateY(0); }
-        .mobile-menu a { font-family: var(--font-display); font-size: 2rem; color: white; }
-        .mobile-menu .btn { margin-top: 12px; align-self: flex-start; }
+        .mobile-menu a:not(.btn) { font-family: var(--font-display); font-size: 2rem; color: white; }
+        .mobile-menu .btn { margin-top: 12px; align-self: flex-start; font-size: 1rem; padding: 16px 30px; }
 
         /* ---------- hero ---------- */
         .hero {
@@ -755,18 +758,19 @@ export default function App() {
           padding: 150px 0 130px; overflow: hidden;
         }
         .hero-bg { position: absolute; inset: 0; z-index: 0; }
-        .hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 10%; filter: saturate(0.9) brightness(0.72) contrast(1.06); }
-        @media (max-width: 940px) { .hero-bg img { object-position: 50% 6%; } }
+        .hero-bg img { width: 100%; height: 100%; object-fit: cover; object-position: 62% 24%; filter: saturate(0.9) brightness(0.72) contrast(1.06); }
+        @media (max-width: 940px) { .hero-bg img { object-position: 21% 18%; } }
         .hero-bg::after {
           content: ''; position: absolute; inset: 0;
           background:
-            linear-gradient(115deg, color-mix(in srgb, var(--ink) 78%, transparent) 0%, color-mix(in srgb, var(--ink) 42%, var(--cyan) 16%) 52%, color-mix(in srgb, var(--ink) 72%, transparent) 100%),
+            linear-gradient(115deg, color-mix(in srgb, var(--ink) 88%, transparent) 0%, color-mix(in srgb, var(--ink) 46%, var(--cyan) 14%) 48%, color-mix(in srgb, var(--ink) 62%, transparent) 100%),
             radial-gradient(ellipse 60% 55% at 10% 0%, color-mix(in srgb, var(--cyan) 24%, transparent), transparent 60%),
             radial-gradient(ellipse 55% 60% at 92% 100%, color-mix(in srgb, var(--gold) 20%, transparent), transparent 55%);
         }
-        .hero-grid { position: relative; z-index: 1; width: 100%; display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 40px; align-items: center; }
+        .hero-grid { position: relative; z-index: 1; width: 100%; display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 40px; align-items: center; }
         @media (max-width: 940px) { .hero-grid { grid-template-columns: 1fr; } }
-        .hero-copy { margin-left: -49px; }
+        .hero-copy { margin-left: -84px; }
+        @media (max-width: 1180px) { .hero-copy { margin-left: -24px; } }
         @media (max-width: 940px) { .hero-copy { margin-left: 0; } }
 
         .hero-eyebrow {
@@ -813,6 +817,15 @@ export default function App() {
           opacity: 0; transform: translateY(24px);
         }
         @media (max-width: 940px) { .hero-price-card { margin-left: auto; margin-right: auto; } }
+        @media (max-width: 600px) {
+          .hero-price-card { max-width: 280px; padding: 22px 20px; border-radius: 18px; }
+          .hero-price-value { font-size: 2.5rem; }
+          .hero-price-value small { font-size: 1.05rem; }
+          .hero-price-label { font-size: 0.72rem; }
+          .hero-price-foot { font-size: 0.78rem; margin-bottom: 14px; }
+          .hero-avatars img { width: 28px; height: 28px; }
+          .hero-rating { font-size: 0.78rem; margin-top: 10px; }
+        }
         .hero-price-card::before, .hero-price-card::after {
           content: ''; position: absolute; inset: 0; z-index: -1; border-radius: 22px; pointer-events: none;
           border: 1px solid color-mix(in srgb, var(--gold) 25%, transparent);
@@ -1443,16 +1456,17 @@ export default function App() {
           <div className="nav-right">
             <a className="btn btn-accent" href={WHATSAPP_URL} target="_blank" rel="noopener noreferrer">Matricule-se</a>
           </div>
-          <button className="nav-burger" onClick={() => setMobileOpen(true)} aria-label="Abrir menu">
-            <Menu size={26} />
+          <button
+            className="nav-burger"
+            onClick={() => setMobileOpen((o) => !o)}
+            aria-label={mobileOpen ? "Fechar menu" : "Abrir menu"}
+          >
+            {mobileOpen ? <X size={26} /> : <Menu size={26} />}
           </button>
         </div>
       </nav>
 
       <div className={`mobile-menu ${mobileOpen ? "is-open" : ""}`}>
-        <button className="nav-burger" style={{ position: "absolute", top: 24, right: 24 }} onClick={() => setMobileOpen(false)} aria-label="Fechar menu">
-          <X size={28} color="white" />
-        </button>
         {NAV_LINKS.map((l) => (
           <a key={l.href} href={l.href} onClick={(e) => handleAnchorClick(e, l.href)}>{l.label}</a>
         ))}
